@@ -1,7 +1,5 @@
 #!/usr/local/bin/perl
 
-use warnings;
-
 #Organization of the stack for writing characters
 my @stack;
 #String for writing answ
@@ -39,6 +37,7 @@ foreach my $x (split //, $exp) {
           print "Wrong input";
           exit 1;
         }
+        pop @stack;
       }
       elsif ($x eq '*' or $x eq '/' or $x eq '+' or $x eq '-'){
         my $temp = pop @stack;
