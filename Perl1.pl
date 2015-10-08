@@ -2,6 +2,7 @@
 
 #Organization of the stack for writing characters
 my @stack;
+my @stack1;
 #String for writing answ
 my $out = '';
 
@@ -27,10 +28,13 @@ foreach my $x (split //, $exp) {
         #Check for existence of opening bracket
         if (@stack.length ne 0){
           my $temp = pop @stack;
-          while ($temp != ")"){
+          while ($temp != "("){
+			print 1;
+			push @stack1, $temp;
             $out = $out . $temp;
             $temp = pop @stack;
           }
+          $out = $out . $temp;
           undef $temp
         }
         else{
@@ -44,6 +48,7 @@ foreach my $x (split //, $exp) {
         push @stack, $temp;
         while ($prior{$x} <= $prior{$temp}){
           $out = $out . $temp;
+          push @stack1, $temp;
           pop @stack;
           $temp = pop @stack;
           push @stack, $temp;
@@ -55,6 +60,7 @@ foreach my $x (split //, $exp) {
       }
       else{
         $out = $out . $x;
+        push @stack1, $x
       }
     }
 }
@@ -62,7 +68,14 @@ foreach my $x (split //, $exp) {
 foreach my $temp (@stack){
   $out = $out . $temp;
 }
-undef @stack;
+undef @stack2;
+
+#Calculation of Polish notation explicitly
+my @stack1;
+#foreach my $x (split //, $out) {
+#	if ($x eq '*' or $x eq '/' or $x eq '+' or $x eq '-'){
+#		my $x = pop @stack1;
+		 
 
 #Otput answ and math
 print "Reverse Polish notation:\n" . $out . "\n";
