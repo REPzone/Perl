@@ -1,4 +1,5 @@
 #!/usr/bin/perl
+#Reverse Polish notation
 
 #Organization of the stack for writing characters
 my @stack;
