@@ -1,14 +1,19 @@
-#!/usr/local/bin/perl
+#!/usr/bin/perl
 
 #Organization of the stack for writing characters
 my @stack;
-my @stack1;
+my @plquest;
 #String for writing answ
 my $out = '';
 
 print "Enter the expression:\n";
 #Reading of expression
-my $exp = <STDIN>;
+if (@ARGV.length != 0){
+  my $exp = @ARGV[0];
+}
+else{
+  my $exp = <STDIN>;
+}
 #Initialize a hash with priority of operation
 my %prior = (
   "(" => 0,
@@ -29,12 +34,12 @@ foreach my $x (split //, $exp) {
         if (@stack.length ne 0){
           my $temp = pop @stack;
           while ($temp != "("){
-			print 1;
-			push @stack1, $temp;
             $out = $out . $temp;
+            push @plquest, $temp;
             $temp = pop @stack;
           }
           $out = $out . $temp;
+          push @plquest, $temp;
           undef $temp
         }
         else{
@@ -48,7 +53,7 @@ foreach my $x (split //, $exp) {
         push @stack, $temp;
         while ($prior{$x} <= $prior{$temp}){
           $out = $out . $temp;
-          push @stack1, $temp;
+          push @plquest, $temp;
           pop @stack;
           $temp = pop @stack;
           push @stack, $temp;
@@ -60,23 +65,43 @@ foreach my $x (split //, $exp) {
       }
       else{
         $out = $out . $x;
-        push @stack1, $x
+        push @plquest, $x;
       }
     }
 }
 #Write remaining characters
 foreach my $temp (@stack){
   $out = $out . $temp;
+  push @plquest, $temp;
 }
-undef @stack2;
+undef @stack;
 
+#Arr for math RPN;
+my @plansw;
+@plquest = reverse(@plquest);
+print join(", ", @plquest);
 #Calculation of Polish notation explicitly
-my @stack1;
-#foreach my $x (split //, $out) {
-#	if ($x eq '*' or $x eq '/' or $x eq '+' or $x eq '-'){
-#		my $x = pop @stack1;
-		 
+while (@plquest.length ne 0){
+  $temp = pop @plquest;
+  if ($temp eq '*'){
+    push @plansw, (pop @plansw) * (pop @plansw);
+  }
+  elsif ($temp eq '/'){
+    push @plansw, (pop @plansw) / (pop @plansw);
+  }
+  elsif ($temp eq '+'){
+    push @plansw, (pop @plansw) + (pop @plansw);
+  }
+  elsif ($temp eq '-'){
+    push @plansw, (pop @plansw) - (pop @plansw);
+  }
+  else{
+    push @plansw, $temp;
+  }
+}
+undef @plquest;
 
 #Otput answ and math
 print "Reverse Polish notation:\n" . $out . "\n";
-print "Result:\n" . eval($exp) . "\n";
+print "Result(RPN):\n" . (pop @plansw) . "\n";
+print "Result(eval):\n" . eval($exp) . "\n";
