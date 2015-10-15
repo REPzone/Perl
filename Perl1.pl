@@ -10,10 +10,10 @@ my $out = '';
 print "Enter the expression:\n";
 #Reading of expression
 if (@ARGV.length != 0){
-  my $exp = @ARGV[0];
+  $exp = @ARGV[0];
 }
 else{
-  my $exp = <STDIN>;
+  $exp = <STDIN>;
 }
 #Initialize a hash with priority of operation
 my %prior = (
@@ -80,7 +80,7 @@ undef @stack;
 #Arr for math RPN;
 my @plansw;
 @plquest = reverse(@plquest);
-print join(", ", @plquest);
+print join(", ", @plquest) . "\n";
 #Calculation of Polish notation explicitly
 while (@plquest.length ne 0){
   $temp = pop @plquest;
@@ -96,6 +96,7 @@ while (@plquest.length ne 0){
   elsif ($temp eq '-'){
     push @plansw, (pop @plansw) - (pop @plansw);
   }
+  elsif ($temp eq ""){}
   else{
     push @plansw, $temp;
   }
