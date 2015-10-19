@@ -2,17 +2,21 @@
 #Reverse Polish notation
 
 #Organization of the stack for writing characters
-my @stack;
-my @plquest;
+@stack;
+@plquest;
 #String for writing answ
-my $out = '';
+$out = '';
+#counter for validation expression
+$count = 0;
 
-print "Enter the expression:\n";
+
 #Reading of expression
 if (@ARGV.length != 0){
   $exp = @ARGV[0];
+  print "Expression:\n" . $exp . "\n";
 }
 else{
+  print "Enter the expression:\n";
   $exp = <STDIN>;
 }
 #Initialize a hash with priority of operation
@@ -24,7 +28,7 @@ my %prior = (
   "*" => 2,
   "/" => 2,
 );
-#Parsing string
+#Parsing input string
 foreach my $x (split //, $exp) {
     if ($x ne " "){
       if ($x eq "("){
@@ -44,12 +48,12 @@ foreach my $x (split //, $exp) {
           undef $temp
         }
         else{
-          print "Wrong input";
-          exit 1;
+          die "Wrong expression";
         }
         pop @stack;
       }
       elsif ($x eq '*' or $x eq '/' or $x eq '+' or $x eq '-'){
+        $count++;
         my $temp = pop @stack;
         push @stack, $temp;
         while ($prior{$x} <= $prior{$temp}){
@@ -61,12 +65,11 @@ foreach my $x (split //, $exp) {
         }
         push @stack, $x;
       }
-      elsif ("\n" eq $x){
-        $x = '';
-      }
+      elsif ("\n" eq $x){}
       else{
+        $count++;
         $out = $out . $x;
-        push @plquest, $x;
+        push @plquest, $x;  
       }
     }
 }
@@ -77,10 +80,14 @@ foreach my $temp (@stack){
 }
 undef @stack;
 
+#Validation expression(stupid metod)
+if (($count % 2) eq 0){
+  exit 1;
+}
+
 #Arr for math RPN;
-my @plansw;
+@plansw;
 @plquest = reverse(@plquest);
-print join(", ", @plquest) . "\n";
 #Calculation of Polish notation explicitly
 while (@plquest.length ne 0){
   $temp = pop @plquest;
@@ -88,13 +95,17 @@ while (@plquest.length ne 0){
     push @plansw, (pop @plansw) * (pop @plansw);
   }
   elsif ($temp eq '/'){
-    push @plansw, (pop @plansw) / (pop @plansw);
+    my $b = pop @plansw;
+    my $a = pop @plansw; 
+    push @plansw, $a - $b;
   }
   elsif ($temp eq '+'){
     push @plansw, (pop @plansw) + (pop @plansw);
   }
   elsif ($temp eq '-'){
-    push @plansw, (pop @plansw) - (pop @plansw);
+    my $b = pop @plansw;
+    my $a = pop @plansw; 
+    push @plansw, $a - $b;
   }
   elsif ($temp eq ""){}
   else{
