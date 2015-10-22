@@ -7,8 +7,8 @@
 #String for writing answ
 $out = '';
 #counter for validation expression
-$count = 0;
-
+$count1 = 0;
+$count2 = 0;
 
 #Reading of expression
 if (@ARGV.length != 0){
@@ -48,12 +48,13 @@ foreach my $x (split //, $exp) {
           undef $temp
         }
         else{
-          die "Wrong expression";
+          print "Wrong expression";
+          exit 1;
         }
         pop @stack;
       }
       elsif ($x eq '*' or $x eq '/' or $x eq '+' or $x eq '-'){
-        $count++;
+        $count1++;
         my $temp = pop @stack;
         push @stack, $temp;
         while ($prior{$x} <= $prior{$temp}){
@@ -67,7 +68,7 @@ foreach my $x (split //, $exp) {
       }
       elsif ("\n" eq $x){}
       else{
-        $count++;
+        $count2++;
         $out = $out . $x;
         push @plquest, $x;  
       }
@@ -81,8 +82,10 @@ foreach my $temp (@stack){
 undef @stack;
 
 #Validation expression(stupid metod)
-if (($count % 2) eq 0){
-  exit 1;
+print $count1 . " " . $count2;
+if ($count1 ne ($count2-1)){
+  print "Expression isn't correct\n";
+  exit 2;
 }
 
 #Arr for math RPN;
