@@ -82,7 +82,6 @@ foreach my $temp (@stack){
 undef @stack;
 
 #Validation expression(stupid metod)
-print $count1 . " " . $count2;
 if ($count1 ne ($count2-1)){
   print "Expression isn't correct\n";
   exit 2;
