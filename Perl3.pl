@@ -23,31 +23,36 @@ else{
 #print "Path to backup: " . $dest;
 
 
+sub rmold{
+  my ($base, $temp) = @_;
+  print "Delete old " . $base .".old";
+  system ("rm", "-rf", $bup . "/" .  $base.".old");
+  print "Delete complete!";
+}
+
+
 sub oldcopy{
   my ($base, $temp) = @_;
   rename ($bup . "/" . $base,$bup . "/" . $base . ".old");
   system ("cp", "-r", $temp, $bup . "/" . $base);
 }
 
+
 sub zip {
   my ($base, $temp) = @_;
   if (($base.".7z") ~~ @bupdir) {
     print "Old version of " . $base . "7zip will be deleted";
     unlink ($bup . "/" . $base,$bup . "/" . $base . ".7z");
-    print "Delete complete!\nCreating new archive:";
-    system ("7z", "a",$bup . "/" .  $base.".7z",$bup . "/" .  $base.".old");
-    print "Archive created!";
-    print "Delete old " . $base .".old";
-    system ("rm", "-rf", $bup . "/" .  $base.".old");
-    print "Delete complete!\nCreate new " . $base.".old";
-    oldcopy($base, $temp); 
+    print "Delete complete!";;
   }
-  else {
-    print "Creating 7zip archive:";
-    system ("7z", "a",$bup . "/" .  $base.".7z",$bup . "/" .  $base.".old");
-    print "Archive created!";
-  }
+  print "Creating 7zip archive:";
+  system ("7z", "a",$bup . "/" .  $base.".7z",$bup . "/" .  $base.".old");
+  print "Archive created!";
+  rmold($base, $temp);
+  print "Create new " . $base.".old\nCreate new " . $base;
+  oldcopy($base, $temp);
 }
+
 
 sub old {
   my ($base, $temp) = @_;
@@ -76,6 +81,7 @@ sub backup {
   }
 }
 
+
 sub prepare {
   print "Dir for backup:";
   while (my $temp = <$config>){
@@ -98,8 +104,7 @@ sub prepare {
     opendir $bup, $bup;
   }
   while (my $bupdir = readdir $bup){
-      print '1111';
-      print $bupdir;
+      #print $bupdir;
       push @bupdir, $bupdir;
     }
 }
