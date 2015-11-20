@@ -1,5 +1,16 @@
 #!/usr/bin/perl
 #"Backup"
+
+=pod
+Example config.dat
+************config.dat***************
+/home/user/Документы
+/home/user/Winedoc
+************************************
+Onlu Unix path!
+In config paths ONLY for backup
+=cut
+
 use File::Basename;
 
 $\ = $/;
