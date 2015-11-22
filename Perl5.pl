@@ -17,12 +17,15 @@ $/ = "\n";
 while ($words = <$file>){
     %word_hash;
     chomp $words;
-    foreach $x (split(/[,.\s]/, $words)){
-        if ($x ~~ %word_hash){
-            $word_hash{$x} += 1;
-        }
-        else{
-            $word_hash{$x} = 1;
+    if ($words){
+        print $words . "\n";
+        foreach $x (split(/[,.\s]/, $words)){
+            if ($x ~~ %word_hash){
+                $word_hash{$x} += 1;
+            }
+            else{
+                $word_hash{$x} = 1;
+            }
         }
     }
 }
