@@ -13,6 +13,7 @@ print "File opened!\n";
 $size = -s $file;
 cui();
 
+
 sub cui{
     #Flag for chousing version of IDv3
     my $flag = 1;
@@ -75,6 +76,7 @@ sub cui{
     }
  }
 
+
  sub id3v1_pars{
     seek ($file, $size - 128, 0);
     read ($file, my $buf, 3);
@@ -88,8 +90,7 @@ sub cui{
         3 => 30,
         4 => 4,
         5 => 30,
-        6 => 1);
-        
+        6 => 1); 
         my $i = 1;
         while ($i<7){
             read($file, $buf, $offset{$i});
@@ -102,6 +103,7 @@ sub cui{
         exit 2;
     }
  }
+
 
 sub id3v1_show{
     my %tag_name =(
@@ -273,6 +275,7 @@ sub id3v1_show{
     }
 }
 
+
 sub id3v1_edit{
     my ($tag) = @_;
     print "Old tag: @tags[$tag-1]\nType new tag (max $offset{$tag} characters)\n";
@@ -290,10 +293,10 @@ sub id3v1_edit{
         $i += 1;
     }
     seek ($file, $size - 125 + $temp, 0);
-    #read ($file, $buf, $offset{$tag});
     print $file $new_tag;
     reopen();
 }
+
 
 sub id3v1_edit_genre{
     print "Show list of genre? (y/n)\n";
@@ -332,11 +335,13 @@ sub id3v1_edit_genre{
     }
 }
 
+
 sub reopen{
     close $file;
     print "Change saved\n";
     open $file, '+<', $filepath or die "Mp3 file isn't exist\n";
 }
+
 
 sub rescan{
     undef @tags;
