@@ -29,6 +29,7 @@ while ($words = <$file>){
         }
     }
 }
+
 for my $key ( sort { $word_hash{$b} <=> $word_hash{$a} } keys %word_hash ) {
     printf "%s : %d\n", $key, $word_hash{ $key };
 }
