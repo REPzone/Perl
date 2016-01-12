@@ -22,7 +22,7 @@ sub cui{
     my $flag1 = 1;
         print "Which version of the tag you want to view?
 [1] ID3v1
-[2] ID3v2
+[2] ID3v2(Not working)
 [3] Exit\n";
         my $menu = <STDIN>;
         $menu += 0;
@@ -68,7 +68,7 @@ sub cui{
             }
         }
         elsif ($menu eq 2){
-            id3v2_pars();
+            #id3v2_pars();
         }
         elsif ($menu eq 3){
             exit 1;
